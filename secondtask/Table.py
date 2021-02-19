@@ -6,14 +6,15 @@ table = "11-10-2002!0 None None 21%\n19-09-2004!1 None None 76%\n12-04-2003!0 No
 print(table)
 result = re.findall(r'[\n]', table)
 i = 0
-j = 1
+j = 0
 while i < len(result):
-    while j < len(result)+1:
+    j = i + 1
+    while j < len(result):
         if i != 0:
             one = table[27 * i:26 + (26 * (i)) + i]
             two = table[27 * (j):26 + (27 * (j))]
             if one == two:
-                table = table[:27 + (26 * (j))]+table[27 + (26 * (j+1))]
+                table = table[:27 * (j)] + table[26 + (26 * (j + 1))]
                 j -= 1
                 result = re.findall(r'[\n]', table)
             j += 1
@@ -21,13 +22,12 @@ while i < len(result):
             one = table[27 * i:26]
             two = table[27 * (j):26 + (27 * (j)):]
             if one == two:
-                table = table[:27 + (26 * (j))]+table[27 + (26 * (j+1))]
+                table = table[:27 * (j)] + table[26 + (26 * (j + 1))]
                 result = re.findall(r'[\n]', table)
                 j -= 1
             j += 1
+
     i += 1
-print("\n")
-print(table)
 table = table.replace('None ', '')
 table = table.replace('\n', '')
 while table.find('!') != -1:
@@ -48,7 +48,7 @@ while table.rfind('%') != -1:
     if table[table.find('%') - 2] == '0':
         table = table.replace("100%", "1.0")
     else:
-        n = (int(table[table.find('%') - 2]) * 10 + int(table[table.find('%') - 1])) / 100
+        n = round((int(table[table.find('%') - 2]) * 10 + int(table[table.find('%') - 1])) / 100, 1)
         table = table + str(n) + "                 "
         table = table[:table.find('%') - 2] + table[table.find('%') + 1:]
 table = table[:table.rfind('/') + 3] + "\n" + table[table.rfind('/') + 12:]

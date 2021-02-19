@@ -18,10 +18,10 @@ def f2(x):
 def f3(n, m):
     summ1 = 0
     summ2 = 0
-    for i in range(1, n):
-        for j in range(1, m):
+    for i in range(1, n+1):
+        for j in range(1, m+1):
             summ1 += (i ** 2 - j ** 8)
-    for i in range(1, n):
+    for i in range(1, n+1):
         summ2 += (e ** i + tan(i) - 7)
     return (11*summ1) + (summ2 / 26)
 
@@ -35,5 +35,5 @@ def f4(x):
 
 print("{:.2e}".format(f(1, 11, -70)))
 print("{:.2e}".format(f2(201)))
-print("{:.2e}".format(f3(68, 45)))
+print("{:.2e}".format(f3(16, 47)))
 print("{:.2e}".format(f4(11)))
