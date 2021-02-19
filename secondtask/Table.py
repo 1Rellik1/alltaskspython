@@ -1,28 +1,33 @@
 from array import *
 import re
 
-table = "17-01-2003!0 None None 13%\n21-02-2000!1 None None 56%\n22-10-2000!0 None None 72%\n22-10-2000!0 None None " \
-        "72%\n22-10-2000!0 None None 72%"
+table = "11-10-2002!0 None None 21%\n19-09-2004!1 None None 76%\n12-04-2003!0 None None 72%\n11-10-2002!0 None None " \
+        "21%\n11-10-2002!0 None None 21% "
 print(table)
 result = re.findall(r'[\n]', table)
 i = 0
+j = 1
 while i < len(result):
-    if i != 0:
-        one = table[27 * i:26 + (26 * (i)) + i]
-        two = table[27 * (i + 1):26 + (27 * (i + 1))]
-        if one == two:
-            table = table[:27 * i] + table[27 * (i + 1):]
-            i -= 1
-            result = re.findall(r'[\n]', table)
-        i += 1
-    else:
-        one = table[27 * i:26]
-        two = table[27 * (i + 1):27 + (26 * (i + 1)):]
-        if one == two:
-            table = table[:27 * i] + table[27 + (26 * (i + 1)):]
-            result = re.findall(r'[\n]', table)
-            i -= 1
-        i += 1
+    while j < len(result)+1:
+        if i != 0:
+            one = table[27 * i:26 + (26 * (i)) + i]
+            two = table[27 * (j):26 + (27 * (j))]
+            if one == two:
+                table = table[:27 + (26 * (j))]+table[27 + (26 * (j+1))]
+                j -= 1
+                result = re.findall(r'[\n]', table)
+            j += 1
+        else:
+            one = table[27 * i:26]
+            two = table[27 * (j):26 + (27 * (j)):]
+            if one == two:
+                table = table[:27 + (26 * (j))]+table[27 + (26 * (j+1))]
+                result = re.findall(r'[\n]', table)
+                j -= 1
+            j += 1
+    i += 1
+print("\n")
+print(table)
 table = table.replace('None ', '')
 table = table.replace('\n', '')
 while table.find('!') != -1:
