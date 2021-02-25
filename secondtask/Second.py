@@ -1,5 +1,6 @@
 import re
 
+
 def f21(mas):
     if mas[1] == 2004:
         if mas[0] == 'kit':
@@ -49,51 +50,43 @@ def f22(number):
 
 
 def f23(table1):
-    result = re.findall(r'[\n]', table1)
-    i = 0
-    j = 0
-    while i < len(result):
-        j = i + 1
-        while j < len(result):
-            if i != 0:
-                one = table1[27 * i:26 + (26 * (i)) + i]
-                two = table1[27 * (j):26 + (27 * (j))]
-                if one == two:
-                    table1 = table1[:27 * (j)] + table1[26 + (26 * (j + 1))]
-                    j -= 1
-                    result = re.findall(r'[\n]', table1)
-                j += 1
-            else:
-                one = table1[27 * i:26]
-                two = table1[27 * (j):26 + (27 * (j)):]
-                if one == two:
-                    table1 = table1[:27 * (j)] + table1[26 + (26 * (j + 1))]
-                    result = re.findall(r'[\n]', table1)
-                    j -= 1
-                j += 1
-        i += 1
-    table1 = table1.replace('None ', '')
-    table1 = table1.replace('\n', '')
-    while table1.find('!') != -1:
-        result = re.search(r'[0-9]', table1)
-        if table1[table1.find('!') + 1] == '0':
-            table1 = table1[:result.start()] + "Не выполнено         " + table1[result.start():]
-            table1 = table1[:table1.find('!')] + table1[(table1.find('!') + 2):]
+    table2 = []
+    line1 = []
+    line2 = []
+    line3 = []
+    check = False
+    for i in range(len(table1)):
+        for l in range(len(line1)):
+            if table1[i][0][table1[i][0].find('!'):] == line1[l]:
+                if table1[i][0][:table1[i][0].find('!')] == line2[l]:
+                    if table1[i][3] == line3[l]:
+                        check = True
+        if not check:
+            for j in range(4):
+                if table1[i][j] is not None:
+                    if table1[i][j].find('!') != -1:
+                        line1.append(table1[i][j][table1[i][j].find('!'):])
+                        line2.append(table1[i][j][:table1[i][j].find('!')])
+                    if table1[i][j].find('%') != -1:
+                        line3.append(table1[i][j])
+    for l in range(len(line1)):
+        if line1[l] == '!0':
+            line1[l] = "Не выполнено"
         else:
-            table1 = table1[:result.start()] + "Выполнено          " + table1[result.start():]
-            table1 = table1[:table1.find('!')] + table1[(table1.find('!') + 2):]
-    result = re.search(r'[0-9]', table1)
-    table1 = table1[:result.start()] + "\n" + table1[result.start():]
-    while table1.find('-') != -1:
-        buff = table1[table1.find('-') + 4:table1.find('-') + 8] + '/' + table1[table1.find('-') + 1:table1.find(
-            '-') + 3] + '/' + table1[table1.find('-') - 2:table1.find('-')] + "          "
-        table1 = table1[:table1.find('-') - 2] + buff + '' + table1[(table1.find('-') + 8):]
-    while table1.rfind('%') != -1:
-        if table1[table1.find('%') - 2] == '0':
-            table1 = table1.replace("100%", "1.0")
-        else:
-            n = round((int(table1[table1.find('%') - 2]) * 10 + int(table1[table1.find('%') - 1])) / 100, 1)
-            table1 = table1 + str(n) + "                 "
-            table1 = table1[:table1.find('%') - 2] + table1[table1.find('%') + 1:]
-    table1 = table1[:table1.rfind('/') + 3] + "\n" + table1[table1.rfind('/') + 12:]
-    return table1
+            line1[l] = "Выполнено"
+    for l in range(len(line3)):
+        line3[l] = round(int(line3[l][:line3[l].find('%')]) / 100, 1)
+    for l in range(len(line2)):
+        line2[l]=line2[l][line2[l].rfind('-')+1:]+'/'+line2[l][line2[l].find('-')+1:line2[l].rfind('-')]+'/'+line2[l][:line2[l].find('-')]
+
+    table2 = [line1, line2, line3]
+
+
+# if table1[i][j][table1[i][j].find('!') + 1] == '0':
+#                                table2[k][l] = "Не выполнено"
+#                                l += 1
+#                            elif table1[i][j][table1[i][j].find('!') + 1] == '1':
+#                                table2[k][l] = "Выполнено"
+
+f23([['17-01-2003!0', None, None, '13%'], ['21-02-2000!1', None, None, '56%'], ['22-10-2000!0', None, None, '72%'],
+     ['22-10-2000!0', None, None, '72%'], ['22-10-2000!0', None, None, '72%']])
