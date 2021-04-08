@@ -2,14 +2,39 @@ import struct
 
 
 def f31(pack_obj):
-    print(struct.unpack(">1f", pack_obj[4:8])[0])
-    print(struct.unpack("1b", pack_obj[8:9])[0])
-    print(struct.unpack(">1H", pack_obj[9:11])[0])
-    print(struct.unpack("1B", pack_obj[11:12])[0])
-    print(struct.unpack(">Q", pack_obj[12:20])[0])
-    print(struct.unpack("1b", pack_obj[20:21])[0])
-    print(struct.unpack("1H", pack_obj[21:23])[0])
-    print(struct.pack(">1Q", 15652248777817851011))
+    print("A1: " + str(struct.unpack(">1f", pack_obj[4:8])[0]))
+    print("A2: " + str(struct.unpack("1b", pack_obj[8:9])[0]))
+    # B
+    print("B1: " + str(struct.unpack(">1H", pack_obj[9:11])[0]))
+    print("B2:" + str(struct.unpack("1B", pack_obj[11:12])[0]))
+    print("B3: " + str(struct.unpack(">Q", pack_obj[12:20])[0]))
+
+    print("A4:" + str(struct.unpack("1b", pack_obj[20:21])[0]))
+    adressC = (struct.unpack(">1H", pack_obj[21:23])[0])
+    # C
+    adressD = (struct.unpack(">1H", pack_obj[adressC:(adressC + 2)])[0])
+    print("C2: " + str(struct.unpack(">1Q", pack_obj[adressC + 2:adressC + 10])[0]))
+    print("C3: " + str(struct.unpack(">1H", pack_obj[adressC + 10:adressC + 12])[0]))
+    print("C4: " + str(struct.unpack(">1d", pack_obj[adressC + 12:adressC + 20])[0]))
+    print("C5: " + str(struct.unpack(">2H", pack_obj[adressC + 20:adressC + 24])))
+    massize=(struct.unpack(">1H", pack_obj[adressC + 20:adressC + 22])[0])
+    masadress=str(struct.unpack(">1H", pack_obj[adressC + 22:adressC + 24])[0])
+    mas=[]
+    for i in massize:
+        mas.add()
+    print("C6: " + str(struct.unpack(">2I", pack_obj[adressC + 24:adressC + 32])))
+    print("C7: " + str(struct.unpack(">1H", pack_obj[adressC + 32:adressC + 34])[0]))
+    # D
+    print("D1: " + str(struct.unpack("1b", pack_obj[adressD:adressD + 1])[0]))
+    print("D2: " + str(struct.unpack(">1f", pack_obj[adressD + 1:adressD + 5])[0]))
+    print("D3: " + str(struct.unpack(">i", pack_obj[adressD + 5:adressD + 9])[0]))
+    Esize = struct.unpack(">1H", pack_obj[adressD + 9:adressD + 11])[0]
+    adressE = struct.unpack(">I", pack_obj[adressD + 11:adressD + 15])[0]
+    print(str(Esize)+"  "+str(adressE))
+    adressF = struct.unpack(">1H", pack_obj[adressD+15:adressD+17])[0]
+    print(adressF)
+    print("D6: " + str(struct.unpack(">I", pack_obj[adressD + 17:adressD + 21])[0]))
+    print("D7: " + str(struct.unpack("1B", pack_obj[adressD + 21:adressD + 22])[0]))
 
 
 f31(b'UWG\x0b\xbf\x02\x18\x11?\xe0\x809\xb1\xef\xbe\xe4\x15\xc2L\x9cM\x00\x81\xac'
